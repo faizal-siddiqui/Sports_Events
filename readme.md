@@ -56,14 +56,15 @@ Others if needed.
 
 2. Event Schema
 
-   - name
+   - event_name
    - description
-   - timings
+   - timing
+   - date
    - no_of_players
    - type_of_game
    - address
    - city
-   - userId - (To build Relationship between user and his post)
+   - user_id - (To build Relationship between user and his post)
 
 3. Requests Schema
 
@@ -138,6 +139,13 @@ const events = [
 | `/api/events/:eventId/requests`                | POST   | Send a request to join an event                       |
 | `/api/events/:eventId/requests/:requestId`     | PATCH  | Accept or reject a user's request to join an event    |
 | `/api/events/:eventId/requests`                | GET    | Fetch the list of requests for a specific event       |
-| `/api/users/:userId/accepted-events`           | GET    | Fetch the list of events a user has been accepted to  |
-| `/api/users/:userId/requested-events`          | GET    | Fetch the list of events a user has requested to join |
+| `/api/user/accepted-events`                    | GET    | Fetch the list of events a user has been accepted to  |
+| `/api/user/requested-events`                   | GET    | Fetch the list of events a user has requested to join |
 | `/api/events/:eventId/expire-pending-requests` | PATCH  | Expire pending requests for an event that has started |
+
+## User
+
+- wrong password / email == 401,
+- err == 500
+- success = 200
+- already exist user - 403
