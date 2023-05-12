@@ -60,7 +60,7 @@ Others if needed.
    - description
    - timing
    - date
-   - no_of_players
+   - players_limit
    - type_of_game
    - address
    - city
@@ -132,6 +132,7 @@ const events = [
 | `/api/register`                                | POST   | Create a new user                                     |
 | `/api/login`                                   | POST   | Authenticate and log in the user                      |
 | `/api/events`                                  | GET    | Fetch all available events                            |
+| `/api/user/events`                             | GET    | Fetch details of User event                           |
 | `/api/events/:eventId`                         | GET    | Fetch details of a specific event                     |
 | `/api/events`                                  | POST   | Create a new event                                    |
 | `/api/events/:eventId`                         | PATCH  | Update an existing event                              |
@@ -139,8 +140,8 @@ const events = [
 | `/api/events/:eventId/requests`                | POST   | Send a request to join an event                       |
 | `/api/events/:eventId/requests/:requestId`     | PATCH  | Accept or reject a user's request to join an event    |
 | `/api/events/:eventId/requests`                | GET    | Fetch the list of requests for a specific event       |
-| `/api/user/accepted-events`                    | GET    | Fetch the list of events a user has been accepted to  |
-| `/api/user/requested-events`                   | GET    | Fetch the list of events a user has requested to join |
+| `/api/user/events/accepted`                    | GET    | Fetch the list of events a user has been accepted to  |
+| `/api/user/events/requested`                   | GET    | Fetch the list of events a user has requested to join |
 | `/api/events/:eventId/expire-pending-requests` | PATCH  | Expire pending requests for an event that has started |
 
 ## User
@@ -149,3 +150,8 @@ const events = [
 - err == 500
 - success = 200
 - already exist user - 403
+
+## Events
+
+- data == 200 success, status = "success" in data object
+- data not found == 404
