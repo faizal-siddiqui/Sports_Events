@@ -132,7 +132,7 @@ const events = [
 | `/api/register`                                | POST   | Create a new user                                     |
 | `/api/login`                                   | POST   | Authenticate and log in the user                      |
 | `/api/events`                                  | GET    | Fetch all available events                            |
-| `/api/user/events`                             | GET    | Fetch details of User event                           |
+| `/api/user/events`                             | GET    | Fetch all User event                                  |
 | `/api/events/:eventId`                         | GET    | Fetch details of a specific event                     |
 | `/api/events`                                  | POST   | Create a new event                                    |
 | `/api/events/:eventId`                         | PATCH  | Update an existing event                              |
