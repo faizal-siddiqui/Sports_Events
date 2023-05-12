@@ -1,3 +1,6 @@
+const { UserModel } = require("../Model/user.model");
+const jwt = require("jsonwebtoken");
+
 const registerUser = async (req, res) => {
   const { name, username, password } = req.body;
 
@@ -23,21 +26,17 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   const { user_id } = req.body; //* passed by middleware
 
-  try {
-    // * Creating Token from jwt
+  // * Creating Token from jwt
 
-    const token = jwt.sign(
-      {
-        user_id,
-      },
-      `${process.env.TOKEN_SECRET}`,
-      { expiresIn: "24h" }
-    );
+  const token = jwt.sign(
+    {
+      user_id,
+    },
+    `${process.env.TOKEN_SECRET}`,
+    { expiresIn: "24h" }
+  );
 
-    res.status(200).json({ msg: "login Successful", token });
-  } catch (err) {
-    res.status(500).json({ err });
-  }
+  res.status(200).json({ msg: "login Successful", token });
 };
 
 module.exports = {

@@ -16,7 +16,7 @@ const eventSchema = mongoose.Schema({
     type: Date,
     required: true,
   },
-  no_of_players: {
+  players_limit: {
     type: Number,
     required: true,
   },
@@ -35,7 +35,7 @@ const eventSchema = mongoose.Schema({
   },
   user_id: {
     type: mongoose.Schema.ObjectId,
-    required: true,
+    ref: "user",
   },
 });
 

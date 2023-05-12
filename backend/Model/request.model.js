@@ -3,16 +3,16 @@ const mongoose = require("mongoose");
 const requestSchema = mongoose.Schema({
   event_id: {
     type: mongoose.Schema.ObjectId,
-    required: true,
+    ref: "event",
   },
   user_id: {
     type: mongoose.Schema.ObjectId,
-    required: true,
+    ref: "user",
   },
   status: {
     type: String,
     enum: ["pending", "accepted", "rejected"],
-    default: "NEW",
+    default: "pending",
   },
 });
 

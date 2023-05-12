@@ -1,5 +1,6 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { UserModel } = require("../Model/user.model");
 
 // * for checking the user already Exist with that username while register
@@ -86,7 +87,7 @@ const authenticateUser = async (req, res, next) => {
 
 // * for authorizing user
 const authorizeUser = async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[0];
+  const token = req.headers.authorization.split(" ")[1];
 
   //   * if token exists
 
