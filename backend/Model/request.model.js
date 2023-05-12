@@ -18,4 +18,6 @@ const requestSchema = mongoose.Schema({
 
 // Request Model
 
-export const RequestModel = mongoose.model("request", requestSchema);
+const RequestModel = mongoose.model("request", requestSchema);
+
+module.exports = { RequestModel };

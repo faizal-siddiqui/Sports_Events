@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const { dbConnection } = require("./Configs/database");
+const { userRouter } = require("./Routes/user.routes");
 
 const app = express();
 
@@ -13,9 +14,11 @@ app.use(express.json()); //inbuilt middleware
 /**
  * * Routes
  */
+app.use("/api", userRouter);
+// app.use("/api/events", );
 
 app.get("/", (req, res) => {
-  res.status.send({ msg: "Hello" });
+  res.status(200).json({ msg: "Hello" });
 });
 
 // listening Server and Connecting Database
