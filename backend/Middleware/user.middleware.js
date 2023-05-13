@@ -74,7 +74,7 @@ const authenticateUser = async (req, res, next) => {
           //* move forward
           next();
         } else {
-          res.status(401).json({ err: "❌ Wrong Password" });
+          res.status(401).json({ msg: "❌ Wrong Password" });
         }
       });
     } else {
@@ -112,7 +112,7 @@ const authorizeUser = async (req, res, next) => {
     } else {
       //! otherwise Token Expired
 
-      res.status(500).json({ err: "Token Expired" });
+      res.status(401).json({ msg: "Token Expired" });
     }
   } else {
     res.status(500).json({ err: "Token Missing" });
