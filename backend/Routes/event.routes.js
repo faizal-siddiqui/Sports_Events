@@ -10,25 +10,25 @@ eventRouter.get("/events", eventController.getAllEvents);
 
 // * Get User Events
 
-eventRouter.get("/user/events", eventController.getUserEvents);
+eventRouter.get("/user/events", authorizeUser, eventController.getUserEvents);
 
 // * Get Single Event
 
 eventRouter.get(
   "/events/:eventId",
-  [authorizeUser],
+  authorizeUser,
   eventController.getSingleEvent
 );
 
 // * Add Event
 
-eventRouter.post("/events", [authorizeUser], eventController.postEvent);
+eventRouter.post("/events", authorizeUser, eventController.postEvent);
 
 // * Update Event
 
 eventRouter.patch(
   "/events/:eventId",
-  [authorizeUser],
+  authorizeUser,
   eventController.updateEvent
 );
 
@@ -36,7 +36,7 @@ eventRouter.patch(
 
 eventRouter.delete(
   "/events/:eventId",
-  [authorizeUser],
+  authorizeUser,
   eventController.deleteEvent
 );
 module.exports = { eventRouter };

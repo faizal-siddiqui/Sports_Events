@@ -87,11 +87,14 @@ const authenticateUser = async (req, res, next) => {
 
 // * for authorizing user
 const authorizeUser = async (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
+  let token = req.headers.authorization;
 
   //   * if token exists
 
   if (token) {
+    // * take out tk=oken by split
+    token = token.split(" ")[1];
+
     // * verify Token
 
     const decoded = jwt.verify(token, `${process.env.TOKEN_SECRET}`);

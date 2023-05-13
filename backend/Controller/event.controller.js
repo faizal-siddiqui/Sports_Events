@@ -70,6 +70,7 @@ const postEvent = async (req, res) => {
 
   const {
     event_name,
+    poster,
     description,
     timing,
     date,
@@ -98,7 +99,7 @@ const postEvent = async (req, res) => {
 
     await event.save();
 
-    res.status(200).json({
+    res.status(201).json({
       msg: "Event Added",
     });
   } catch (err) {

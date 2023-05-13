@@ -5,6 +5,10 @@ const eventSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  poster: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
   },

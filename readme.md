@@ -30,9 +30,9 @@ Others if needed.
 - Create Events
 - set No of players
 - Fill details and descriptions and timings
-- Accept or Reject the Event Requests
+- Accept the Event Requests
 - Check How many people have joined
-- After Game Start Delete all the pending requests
+- After Game Start expire all the pending requests
 
 **USER**
 
@@ -44,7 +44,7 @@ Others if needed.
 - Join the Events (if the player limit is not full)
 - After It got accepted by Event Organizer. He can check who all are other joinees in that events also.
 - He can view the list of events proposals which got accepted and pending.
-- After game start then delete the pending request from here also.
+- After game start then expire the pending request from here also.
 
 ### Schemas
 
@@ -140,6 +140,7 @@ const events = [
 | `/api/events/:eventId/requests`                | POST   | Send a request to join an event                       |
 | `/api/events/:eventId/requests/:requestId`     | PATCH  | Accept or reject a user's request to join an event    |
 | `/api/events/:eventId/requests`                | GET    | Fetch the list of requests for a specific event       |
+| `/api/user/accepted/event/request`             | GET    | Get the Status od user event Request                  |
 | `/api/user/events/accepted`                    | GET    | Fetch the list of events a user has been accepted to  |
 | `/api/user/events/requested`                   | GET    | Fetch the list of events a user has requested to join |
 | `/api/events/:eventId/expire-pending-requests` | PATCH  | Expire pending requests for an event that has started |
@@ -150,8 +151,20 @@ const events = [
 - err == 500
 - success = 200
 - already exist user - 403
+- register - 201
+- login 200
 
 ## Events
 
 - data == 200 success, status = "success" in data object
 - data not found == 404
+- error == 500
+- POST == 201
+
+## Requests
+
+- data == 200 success, status = "success" in data object
+- data not found == 404
+- error == 500
+- POST == 201
+- status - button - Join - status = "pending" | "accepted" | "not_applied"
