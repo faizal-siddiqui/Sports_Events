@@ -5,10 +5,12 @@ import Authentication from "./pages/Authentication";
 import EventDetails from "./pages/EventDetails";
 import UserEvents from "./pages/UserEvents";
 import RequestSummary from "./pages/RequestSummary";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <div className="App">
+      <Navbar />
       <Routes>
         <Route
           path="/"

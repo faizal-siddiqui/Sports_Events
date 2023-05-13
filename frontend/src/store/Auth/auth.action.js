@@ -29,7 +29,7 @@ export const signUpUser =
     dispatch({ type: AUTH_LOADING });
 
     try {
-      // *getting Response Promise
+      // *getting Response Object
 
       const response = await fetch(`${API_URL}/api/register`, {
         method: "POST",
@@ -44,7 +44,7 @@ export const signUpUser =
       const data = await response.json();
 
       /**
-       * * checking all the response codes and based upon that passing responses
+       * * checking all the response codes and based upon that passing actions
        * * Toast - To showcase Toast message to client
        */
 
@@ -60,6 +60,8 @@ export const signUpUser =
         console.log("error", data);
 
         Toast(data.err, TOAST.ERROR);
+
+        dispatch({ type: AUTH_ERROR });
       } else {
         console.log("warning", data);
 
@@ -83,7 +85,7 @@ export const loginUser = (userCreds, Toast, navigate) => async (dispatch) => {
   dispatch({ type: AUTH_LOADING });
 
   try {
-    // *getting Response Promise
+    // *getting Response Object
 
     const response = await fetch(`${API_URL}/api/login`, {
       method: "POST",
@@ -98,7 +100,7 @@ export const loginUser = (userCreds, Toast, navigate) => async (dispatch) => {
     const data = await response.json();
 
     /**
-     * * checking all the response codes and based upon that passing responses
+     * * checking all the response codes and based upon that passing actions
      * * Toast - To showcase Toast message to client
      */
 
@@ -117,6 +119,8 @@ export const loginUser = (userCreds, Toast, navigate) => async (dispatch) => {
       console.log("error", data);
 
       Toast(data.err, TOAST.ERROR);
+
+      dispatch({ type: AUTH_ERROR });
     } else {
       console.log("warning", data);
 

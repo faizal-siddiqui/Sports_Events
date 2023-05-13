@@ -1,10 +1,4 @@
-import {
-  AUTH_ERROR,
-  AUTH_LOADING,
-  AUTH_LOGIN,
-  AUTH_RESET,
-  AUTH_SIGNUP,
-} from "./auth.types";
+import * as types from "./auth.types";
 
 const findtoken = () => {
   return document.cookie
@@ -24,27 +18,30 @@ export const authReducer = (state = initialState, { type, payload }) => {
   // * applying switch Case on action types
 
   switch (type) {
-    case AUTH_LOADING: {
+    case types.AUTH_LOADING: {
       return {
         ...state,
         loading: true,
         error: false,
       };
     }
-    case AUTH_ERROR: {
+
+    case types.AUTH_ERROR: {
       return {
         ...state,
         error: true,
         loading: false,
       };
     }
-    case AUTH_SIGNUP: {
+
+    case types.AUTH_SIGNUP: {
       return {
         ...state,
         loading: false,
       };
     }
-    case AUTH_LOGIN: {
+
+    case types.AUTH_LOGIN: {
       return {
         ...state,
         auth: true,
@@ -52,9 +49,11 @@ export const authReducer = (state = initialState, { type, payload }) => {
         token: payload,
       };
     }
-    case AUTH_RESET: {
+
+    case types.AUTH_RESET: {
       return initialState;
     }
+
     default: {
       return state;
     }

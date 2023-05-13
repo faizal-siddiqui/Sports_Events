@@ -101,6 +101,7 @@ const SignUp = ({ setToggle }) => {
                   placeholder="Enter Username"
                   type="text"
                   id="username"
+                  autoComplete="username"
                   value={userCreds.username}
                   onChange={handleChange}
                 />
@@ -110,7 +111,7 @@ const SignUp = ({ setToggle }) => {
                 <Input
                   placeholder="Enter Password"
                   type="password"
-                  autocomplete="current-password"
+                  autoComplete="current-password"
                   id="password"
                   value={userCreds.password}
                   onChange={handleChange}
