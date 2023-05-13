@@ -122,7 +122,7 @@ const SignUp = ({ setToggle }) => {
               >
                 <Button
                   type="submit"
-                  bg={"blue.400"}
+                  bg={"teal.400"}
                   color={"white"}
                   _hover={{
                     bg: "blue.500",
