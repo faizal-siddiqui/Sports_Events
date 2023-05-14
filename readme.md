@@ -127,23 +127,21 @@ const events = [
 
 ### API Endpoints
 
-| Endpoint                                       | Method | Description                                           |
-| ---------------------------------------------- | ------ | ----------------------------------------------------- |
-| `/api/register`                                | POST   | Create a new user                                     |
-| `/api/login`                                   | POST   | Authenticate and log in the user                      |
-| `/api/events`                                  | GET    | Fetch all available events                            |
-| `/api/user/events`                             | GET    | Fetch all User event                                  |
-| `/api/events/:eventId`                         | GET    | Fetch details of a specific event                     |
-| `/api/events`                                  | POST   | Create a new event                                    |
-| `/api/events/:eventId`                         | PATCH  | Update an existing event                              |
-| `/api/events/:eventId`                         | DELETE | Delete an event                                       |
-| `/api/events/:eventId/requests`                | POST   | Send a request to join an event                       |
-| `/api/events/:eventId/requests/:requestId`     | PATCH  | Accept or reject a user's request to join an event    |
-| `/api/events/:eventId/requests`                | GET    | Fetch the list of requests for a specific event       |
-| `/api/user/accepted/event/request`             | GET    | Get the Status od user event Request                  |
-| `/api/user/events/accepted`                    | GET    | Fetch the list of events a user has been accepted to  |
-| `/api/user/events/requested`                   | GET    | Fetch the list of events a user has requested to join |
-| `/api/events/:eventId/expire-pending-requests` | PATCH  | Expire pending requests for an event that has started |
+| Endpoint                                   | Method | Description                                           |
+| ------------------------------------------ | ------ | ----------------------------------------------------- |
+| `/api/register`                            | POST   | Create a new user                                     |
+| `/api/login`                               | POST   | Authenticate and log in the user                      |
+| `/api/events`                              | GET    | Fetch all available events                            |
+| `/api/user/events`                         | GET    | Fetch all User event                                  |
+| `/api/events/:eventId`                     | GET    | Fetch details of a specific event                     |
+| `/api/events`                              | POST   | Create a new event                                    |
+| `/api/events/:eventId`                     | PATCH  | Update an existing event                              |
+| `/api/events/:eventId`                     | DELETE | Delete an event                                       |
+| `/api/events/:eventId/requests`            | POST   | Send a request to join an event                       |
+| `/api/events/:eventId/requests/:requestId` | PATCH  | Accept a user's request to join an event              |
+| `/api/events/:eventId/requests`            | GET    | Fetch the list of requests for a specific event       |
+| `/user/event/request/status`               | GET    | Get the Status of user event Request                  |
+| `/user/events/requests`                    | GET    | Fetch the list of events a user has requested to join |
 
 ## User
 
@@ -160,6 +158,8 @@ const events = [
 - data not found == 404
 - error == 500
 - POST == 201
+- PATCH == 200
+- DELETE == 200
 
 ## Requests
 
