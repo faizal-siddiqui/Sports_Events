@@ -1,9 +1,11 @@
 import * as types from "./request.types";
 
 const initialState = {
-  eventRequests: [], //* get requests of each event created by user
+  eventAcceptedRequests: [], //* get accepted requests of each event created by user
+  eventPendingRequests: [], //* get pending requests of each event created by user
   userEventStatus: "", //* specific for user, different for different events
-  useEventRequests: [], //* Requests of the user who has applied in the event
+  userAcceptedEventRequests: [], //* Accepted Requests of the user who has applied in the event
+  userRequestedEventRequests: [], //* Requested Requests of the user who has applied in the event
   loading: false,
   error: false,
 };
@@ -42,18 +44,34 @@ export const requestReducer = (state = initialState, { type, payload }) => {
       };
     }
 
-    case types.GET_EVENT_REQUEST: {
+    case types.GET_ACCEPTED_EVENT_REQUEST: {
       return {
         ...state,
-        eventRequests: payload,
+        eventAcceptedRequests: payload,
         loading: false,
       };
     }
 
-    case types.GET_USER_EVENT_REQUEST: {
+    case types.GET_PENDING_EVENT_REQUEST: {
       return {
         ...state,
-        useEventRequests: payload,
+        eventPendingRequests: payload,
+        loading: false,
+      };
+    }
+
+    case types.GET_USER_ACCEPTED_EVENT_REQUEST: {
+      return {
+        ...state,
+        userAcceptedEventRequests: payload,
+        loading: false,
+      };
+    }
+
+    case types.GET_USER_REQUESTED_EVENT_REQUEST: {
+      return {
+        ...state,
+        userRequestedEventRequests: payload,
         loading: false,
       };
     }

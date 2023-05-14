@@ -2,17 +2,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useToastComponent from "../custom-hook/useToast";
 import { getUserEvents } from "../store/Event/event.action";
-import { Button, SimpleGrid, Skeleton } from "@chakra-ui/react";
+import { SimpleGrid, Skeleton } from "@chakra-ui/react";
 import EventCard from "../components/EventCard";
-
-const ButtonComponent = () => {
-  return (
-    <>
-      <Button backgroundColor={"green.400"}>Partcipants - {3}</Button>
-      <Button backgroundColor={"yellow.400"}>Requests - {3}</Button>
-    </>
-  );
-};
+import ButtonComponent from "../components/ButtonComponent";
 
 const UserEvents = () => {
   // * Consuming Redux Event State and auth State
@@ -25,6 +17,8 @@ const UserEvents = () => {
   const Toast = useToastComponent();
 
   useEffect(() => {
+    // * getUserEvents to get all the events of the registered user
+
     dispatch(getUserEvents(token, Toast));
   }, []);
   return (
@@ -48,7 +42,7 @@ const UserEvents = () => {
               {/* <Link to={`/events/${event._id}`}> */}
               <EventCard
                 event={event}
-                buttons={<ButtonComponent />}
+                buttons={<ButtonComponent eventId={event._id} />}
               />
               {/* </Link> */}
             </Skeleton>

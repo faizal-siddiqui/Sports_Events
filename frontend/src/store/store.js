@@ -7,12 +7,14 @@ import {
 import thunk from "redux-thunk";
 import { authReducer } from "./Auth/auth.reducer";
 import { eventReducer } from "./Event/event.reducer";
+import { requestReducer } from "./Request/request.reducer";
 
 // * Root reducer to combine all reducers
 
 const rootReducer = combineReducers({
   authManager: authReducer,
   eventManager: eventReducer,
+  requestManager: requestReducer,
 });
 
 // * Adding Redux Devtools Extension for testing

@@ -19,7 +19,7 @@ const warningHandle = (response, data, Toast, dispatch) => {
   // * If the response code is 500 then showcase error in the Toast
 
   if (response.status === 500) {
-    console.log("error", data);
+    // console.log("error", data);
 
     Toast(data.err, TOAST.ERROR);
 

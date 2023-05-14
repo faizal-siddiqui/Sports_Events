@@ -8,7 +8,7 @@ import {
   Skeleton,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import DrawerComponent from "../components/Drawer";
 import Filter from "../components/Filter";
@@ -17,8 +17,11 @@ import { getAllEvents } from "../store/Event/event.action";
 import useToastComponent from "../custom-hook/useToast";
 import EventCard from "../components/EventCard";
 import { Link } from "react-router-dom";
+import Pagination from "../components/Pagination";
 
 const Home = () => {
+  const [page, setPage] = useState(1);
+
   // * Consuming Redux Event State and auth State
   const { events, loading } = useSelector((state) => state.eventManager);
 
@@ -31,8 +34,8 @@ const Home = () => {
   const Toast = useToastComponent();
 
   useEffect(() => {
-    dispatch(getAllEvents("", Toast));
-  }, []);
+    dispatch(getAllEvents(`page=${page}&limit=${6}`, Toast));
+  }, [page]);
 
   return (
     <div>
@@ -87,6 +90,10 @@ const Home = () => {
           </SimpleGrid>
         </Box>
       </Flex>
+      <Pagination
+        page={page}
+        setPage={setPage}
+      />
     </div>
   );
 };

@@ -10,9 +10,15 @@ import {
 import React, { useEffect } from "react";
 import styles from "../styles/EventDetails.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getSingleEvents } from "../store/Event/event.action";
 import { useParams } from "react-router-dom";
 import useToastComponent from "../custom-hook/useToast";
+import { getSingleEvents } from "../store/Event/event.action";
+import * as action from "../store/Request/request.action";
+import { TOAST } from "../utils/toastType";
+import * as check from "../utils/check";
+import AcceptedUser from "../components/AcceptedUser";
+
+// *Small Heading And Info Component
 
 const HeadAndInfo = ({ children, head }) => {
   return (
@@ -31,10 +37,15 @@ const HeadAndInfo = ({ children, head }) => {
   );
 };
 
+// *Event Details Component
+
 const EventDetails = () => {
-  // * Consuming event and token from Redux State
+  // * Consuming states from Redux State
   const { event, loading } = useSelector((state) => state.eventManager);
   const { token } = useSelector((state) => state.authManager);
+  const { userEventStatus, eventAcceptedRequests } = useSelector(
+    (state) => state.requestManager
+  );
 
   const dispatch = useDispatch();
 
@@ -45,10 +56,56 @@ const EventDetails = () => {
   const Toast = useToastComponent();
 
   useEffect(() => {
-    // * call getSingle Event When component mounts
+    //*When component mounts
 
+    // * call getSingleEvent Action to get the details of the event
     dispatch(getSingleEvents(token, eventId, Toast));
+
+    // * Call getUserRequestStatus Action to get the user request status of this event
+    dispatch(action.getUserRequestStatus(token, eventId, Toast));
+
+    //* Call getAcceptedEventRequest to get the get this event's requests which got accepted
+    dispatch(action.getAcceptedEventRequest(token, eventId, Toast));
   }, []);
+
+  const joinEventFunc = () => {
+    // *if userEventStatus is not_applied then only create Request otherwise show Toast
+
+    if (userEventStatus === "not_applied") {
+      //* check Timing Expired or not
+
+      if (check.isEventDateAndTimePassed(event.date, event.timing)) {
+        Toast("Event Started You cannot join", TOAST.WARNING);
+
+        return;
+      }
+
+      // *Here eventAcceptedRequests stores all the user who are the participant of this event that means whose request got accepted for this event
+
+      //* check is Event Filled or not
+
+      if (
+        check.isEventFilled(eventAcceptedRequests.length, event.players_limit)
+      ) {
+        Toast("Event Already Filled", TOAST.WARNING);
+
+        return;
+      }
+
+      // * If above cases are not true then create a join request of the user
+
+      dispatch(action.joinEvent(token, eventId, Toast));
+
+      //
+    } else if (userEventStatus === "accepted") {
+      // * allows user to see all the other users whose request got accepted for this event
+
+      return;
+    } else {
+      Toast("You have Already Requested", TOAST.WARNING);
+      return;
+    }
+  };
 
   return (
     <Box p={{ lg: "7", base: "5" }}>
@@ -121,9 +178,22 @@ const EventDetails = () => {
               <Button
                 backgroundColor="teal.400"
                 className={styles.joinBtn}
+                onClick={joinEventFunc}
               >
+                {/* * TODO: CHANGE THE DATA OF BUTTON DYNAMICALLY */}
                 JOIN
               </Button>
+
+              {/* Showing Other Participants of this event to Acccepted User*/}
+
+              {userEventStatus === "accepted" ? (
+                <AcceptedUser
+                  btnText={"See Other Users"}
+                  eventId={eventId}
+                />
+              ) : (
+                ""
+              )}
             </Box>
           </Skeleton>
         </Box>
