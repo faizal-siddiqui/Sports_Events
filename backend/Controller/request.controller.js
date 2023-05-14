@@ -27,7 +27,7 @@ const reqToJoinEvent = async (req, res) => {
   }
 };
 
-// * PATCH status of request (accepted or rejected)
+// * PATCH status of request (accepted or pending)
 
 const updateReqStatus = async (req, res) => {
   // * updating field
@@ -37,13 +37,41 @@ const updateReqStatus = async (req, res) => {
   const { eventId, requestId } = req.params;
 
   try {
-    //   * saving Request
+    //* Fetch the existing request from the database
+    const existingRequest = await RequestModel.findById(requestId).populate(
+      "event_id"
+    );
+
+    // if not exist
+    if (!existingRequest) {
+      return res.status(404).json({ msg: "Event not found" });
+    }
+
+    // * find all the accepted request of the event
+    const acceptedRequest = await RequestModel.find({
+      event_id: eventId,
+      status: "accepted",
+    });
+
+    // * if we want status to be accepted
+    // * so compare players_limit and accepted request
+    // * if they equal then event filled
+
+    if (
+      status === "accepted" &&
+      existingRequest.event_id.players_limit === acceptedRequest.length
+    ) {
+      res.status(401).json({ msg: "Event Already Filled" });
+    }
+
+    //* Save the updated event to the database
+
     await RequestModel.findByIdAndUpdate(requestId, {
       status,
     });
 
     res.status(200).json({
-      msg: "Request Done",
+      msg: "Request Updated",
     });
   } catch (err) {
     res.status(500).json({ err });
@@ -56,15 +84,24 @@ const getEventRequest = async (req, res) => {
   //   * getting eventId from params
   const { eventId } = req.params;
 
-  //   * adding query to filter accepted and rejected
-  const query = req.query;
+  //   * adding query to filter status accepted and rejected
+  let { status } = req.query;
+
+  if (!status) {
+    res.status(404).json({ msg: "Status Not Found" });
+  }
+
+  // If status is not already an array, convert it to an array
+  if (!Array.isArray(status)) {
+    status = [status];
+  }
 
   try {
     //   * getting all Requests of event
 
     const requests = await RequestModel.find({
       event_id: eventId,
-      ...query,
+      status: { $in: status },
     }).populate({
       path: "user_id",
       select: "name",
@@ -112,15 +149,24 @@ const getRequestedUserRequest = async (req, res) => {
   //   * getting user_id from body
   const { user_id } = req.body;
 
-  // * This query contains status of request on the basis of which we want to filter events
-  const { status } = req.query;
+  // * This query contains status of request that we want to filter
+  let { status } = req.query;
+
+  if (!status) {
+    res.status(404).json({ msg: "Status Not found" });
+  }
+
+  //* If status is not already an array, convert it to an array
+  if (!Array.isArray(status)) {
+    status = [status];
+  }
 
   try {
     //   * getting all pending Requests of user
 
     const requests = await RequestModel.find({
       user_id,
-      status,
+      status: { $in: status },
     }).populate({
       path: "event_id",
       select:
