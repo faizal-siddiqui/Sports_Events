@@ -21,7 +21,7 @@ function App() {
           element={<Authentication />}
         />
         <Route
-          path="/events/:event_id"
+          path="/events/:eventId"
           element={<EventDetails />}
         />
         <Route

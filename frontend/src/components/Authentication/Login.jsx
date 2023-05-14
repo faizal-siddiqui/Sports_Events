@@ -33,7 +33,7 @@ const Login = ({ setToggle }) => {
 
   const dispatch = useDispatch();
 
-  //* Toast from custom component
+  //* Toast from custom hook
   const Toast = useToastComponent();
 
   //   * Navigate to navigate user to home page

@@ -33,7 +33,7 @@ const SignUp = ({ setToggle }) => {
 
   const dispatch = useDispatch();
 
-  //* Toast from custom component
+  //* Toast from custom hook
   const Toast = useToastComponent();
 
   //   * function to render login Component

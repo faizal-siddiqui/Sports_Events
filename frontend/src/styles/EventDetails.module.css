@@ -1,0 +1,40 @@
+.imageBox{
+    width: 45%;
+}
+
+.detailsBox{
+    width: 55%;
+    margin-left: 40px;
+}
+
+.head{
+    display: inline-block;
+    width: 100px;
+    border: 2px solid rdd;
+}
+
+.joinBtn{
+    display: inline-block;
+    width: 250px;
+    background-color: rgb(120, 206, 206);
+    margin-top: 30px;
+    color: #fff;
+}
+
+
+@media all and (max-width: 480px){
+    
+    .imageBox{
+        width: 100%;
+    }
+    
+    .detailsBox{
+        width: 100%;
+        margin-left: 15px;
+    }
+
+    .joinBtn{
+        width: 200px;
+    }
+
+}

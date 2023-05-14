@@ -20,6 +20,11 @@ import {
 import { Link } from "react-router-dom";
 
 import DrawerComponent from "../Drawer";
+import ModalComponent from "../Modal";
+import Form from "../Form";
+import { useDispatch, useSelector } from "react-redux";
+import { createEvent } from "../../store/Event/event.action";
+import useToastComponent from "../../custom-hook/useToast";
 
 const Links = [
   {
@@ -50,6 +55,24 @@ const NavLink = ({ children, path }) => (
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const drawer = useDisclosure();
+  const modal = useDisclosure();
+
+  //   * consuming redux state
+  const { token } = useSelector((state) => state.authManager);
+
+  const dispatch = useDispatch();
+
+  //* Toast from Custom Hook
+  const Toast = useToastComponent();
+
+  //   * for adding event when user click on submit
+  const addEventFunc = (eventData) => {
+    //* dispatching add Event action
+    dispatch(createEvent(token, eventData, Toast));
+
+    //* for closing modal
+    modal.onClose();
+  };
 
   return (
     <>
@@ -127,9 +150,20 @@ const Navbar = () => {
               size={"sm"}
               mx={2}
               leftIcon={<AddIcon />}
+              onClick={modal.onOpen}
             >
               Events
             </Button>
+
+            {/* Modal Component for adding Event */}
+
+            <ModalComponent
+              title={"Add Event"}
+              isOpen={modal.isOpen}
+              onClose={modal.onClose}
+            >
+              <Form addEventFunc={addEventFunc} />
+            </ModalComponent>
 
             {/* Login Link */}
 

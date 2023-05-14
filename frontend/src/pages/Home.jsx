@@ -1,23 +1,33 @@
-import { Box, Button, Flex, Grid, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  SimpleGrid,
+  Skeleton,
+  useDisclosure,
+} from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import DrawerComponent from "../components/Drawer";
 import Filter from "../components/Filter";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllEvents, getUserEvents } from "../store/Event/event.action";
+import { getAllEvents } from "../store/Event/event.action";
 import useToastComponent from "../custom-hook/useToast";
+import EventCard from "../components/EventCard";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   // * Consuming Redux Event State and auth State
-  const { events } = useSelector((state) => state.eventManager);
-  const { token } = useSelector((state) => state.authManager);
+  const { events, loading } = useSelector((state) => state.eventManager);
 
   const dispatch = useDispatch();
 
   // * drawer disclosure to handle open and close of drawer
   const drawer = useDisclosure();
 
-  // *  Toast from custom Component
+  // *  Toast from custom hook
   const Toast = useToastComponent();
 
   useEffect(() => {
@@ -52,11 +62,29 @@ const Home = () => {
         {/* * This block show all the events in the form of grid*/}
 
         <Box className={styles.events}>
-          <Grid>
+          <SimpleGrid
+            columns={{
+              lg: "3",
+              md: "2",
+              sm: "2",
+              base: "1",
+            }}
+            spacing={5}
+          >
             {
               // * Map Events data here
+              events?.map((event) => (
+                <Skeleton
+                  key={event._id}
+                  isLoaded={!loading}
+                >
+                  <Link to={`/events/${event._id}`}>
+                    <EventCard event={event} />
+                  </Link>
+                </Skeleton>
+              ))
             }
-          </Grid>
+          </SimpleGrid>
         </Box>
       </Flex>
     </div>
