@@ -82,7 +82,7 @@ const getEventRequest = async (req, res) => {
 
 // * Check User is Accepted to event of eventID or not
 
-const getUserEventAcceptedStatus = async (req, res) => {
+const getUserEventRequestStatus = async (req, res) => {
   //   * getting user_id from body
   const { user_id } = req.body;
 
@@ -97,6 +97,7 @@ const getUserEventAcceptedStatus = async (req, res) => {
       event_id: eventId,
     });
 
+    // * Passing user request status if found otherwise not_applied which means user has not applied ye
     res.status(200).json({
       status: request ? request.status : "not_applied",
     });
@@ -140,6 +141,6 @@ module.exports = {
   reqToJoinEvent,
   updateReqStatus,
   getEventRequest,
-  getUserEventAcceptedStatus,
+  getUserEventRequestStatus,
   getRequestedUserRequest,
 };

@@ -31,8 +31,8 @@ requestRouter.get(
 // * Here User will get to know about whether the request has been accepted, pending, or not_applied
 
 requestRouter.get(
-  "/user/event/request/status",
-  requestController.getUserEventAcceptedStatus
+  "/user/:eventId/request/status",
+  requestController.getUserEventRequestStatus
 );
 
 //* Fetch All the request of the user which are requested
