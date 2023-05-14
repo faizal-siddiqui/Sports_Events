@@ -140,8 +140,8 @@ const events = [
 | `/api/events/:eventId/requests`            | POST   | Send a request to join an event                       |
 | `/api/events/:eventId/requests/:requestId` | PATCH  | Accept a user's request to join an event              |
 | `/api/events/:eventId/requests`            | GET    | Fetch the list of requests for a specific event       |
-| `/user/event/request/status`               | GET    | Get the Status of user event Request                  |
-| `/user/events/requests`                    | GET    | Fetch the list of events a user has requested to join |
+| `/api/user/:eventId/request/status`        | GET    | Get the Status of user event Request                  |
+| `/api/user/events/requests`                | GET    | Fetch the list of events a user has requested to join |
 
 ## User
 
