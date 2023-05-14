@@ -27,24 +27,18 @@ requestRouter.get(
   requestController.getEventRequest
 );
 
-//* Fetch All the request of the user which are accepted
+//* Get Status of the user's request for that event
+// * Here User will get to know about whether the request has been accepted, pending, or not_applied
 
 requestRouter.get(
-  "/user/accepted/event/request",
-  requestController.getUserAcceptedRequest
-);
-
-//* Fetch All the request of the user which are accepted
-
-requestRouter.get(
-  "/user/events/accepted",
-  requestController.getAcceptedUserRequest
+  "/user/event/request/status",
+  requestController.getUserEventAcceptedStatus
 );
 
 //* Fetch All the request of the user which are requested
 
 requestRouter.get(
-  "/user/events/requested",
+  "/user/events/requests",
   updateExpiredRequests,
   requestController.getRequestedUserRequest
 );

@@ -3,15 +3,41 @@ const { EventModel } = require("../Model/event.model");
 // * GET All Events
 
 const getAllEvents = async (req, res) => {
-  // TODO: ADDING FILTERS and POpulate
+  const { page = 1, limit = 6, city, type_of_game, q } = req.query;
+
+  // * how many events skipped in every pages
+  const skipCount = (Number(page) - 1) * Number(limit);
 
   try {
-    //* getting list of events
+    //* creating query Object
 
-    const events = await EventModel.find().populate("user_id");
+    const query = EventModel.find();
+
+    // *adding city filter
+    if (city) {
+      query.find({ city });
+    }
+
+    // *adding type of game filter
+    if (type_of_game) {
+      query.find({ type_of_game });
+    }
+
+    // *adding search filter
+    if (q) {
+      query.find({
+        event_name: { $regex: `${q}`, $options: "i" },
+      });
+    }
+
+    // *added Pagination and resolving promise
+
+    const events = query
+      .skip(skipCount)
+      .limit(Number(limit))
+      .populate("user_id");
 
     // * passing events data to client
-
     res.status(200).json({
       status: "success",
       count: events.length,
@@ -85,6 +111,7 @@ const postEvent = async (req, res) => {
 
     const event = new EventModel({
       event_name,
+      poster,
       description: description || "",
       timing,
       date,

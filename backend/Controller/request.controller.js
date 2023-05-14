@@ -27,7 +27,7 @@ const reqToJoinEvent = async (req, res) => {
   }
 };
 
-// * PATCH status of request (accepted or pending)
+// * PATCH status of request (accepted or rejected)
 
 const updateReqStatus = async (req, res) => {
   // * updating field
@@ -82,7 +82,7 @@ const getEventRequest = async (req, res) => {
 
 // * Check User is Accepted to event of eventID or not
 
-const getUserAcceptedRequest = async (req, res) => {
+const getUserEventAcceptedStatus = async (req, res) => {
   //   * getting user_id from body
   const { user_id } = req.body;
 
@@ -105,46 +105,21 @@ const getUserAcceptedRequest = async (req, res) => {
   }
 };
 
-// * GET All the request of the User which are accepted
-
-const getAcceptedUserRequest = async (req, res) => {
-  //   * getting user_id from body
-  const { user_id } = req.body;
-
-  try {
-    //   * getting all accepted Requests of user
-
-    const requests = await RequestModel.find({
-      user_id,
-      status: "accepted",
-    }).populate({
-      path: "event_id",
-      select:
-        "_id event_name poster description timing date players_limit type_of_game address city",
-    });
-
-    res.status(200).json({
-      status: "success",
-      count: requests.length,
-      data: requests,
-    });
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-};
-
-// * GET All the request of the User which are requested or pending
+// * GET All the request of the User which are accepted, rejected, expired or pending
 
 const getRequestedUserRequest = async (req, res) => {
   //   * getting user_id from body
   const { user_id } = req.body;
+
+  // * This query contains status of request on the basis of which we want to filter events
+  const { status } = req.query;
 
   try {
     //   * getting all pending Requests of user
 
     const requests = await RequestModel.find({
       user_id,
-      status: "pending",
+      status,
     }).populate({
       path: "event_id",
       select:
@@ -165,7 +140,6 @@ module.exports = {
   reqToJoinEvent,
   updateReqStatus,
   getEventRequest,
-  getUserAcceptedRequest,
-  getAcceptedUserRequest,
+  getUserEventAcceptedStatus,
   getRequestedUserRequest,
 };
