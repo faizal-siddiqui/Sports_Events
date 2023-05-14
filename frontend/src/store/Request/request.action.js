@@ -31,6 +31,8 @@ const warningHandle = (response, data, Toast, dispatch) => {
   } else {
     console.log("warning", data);
 
+    dispatch({ type: types.REQUEST_ERROR });
+
     Toast(data.msg, TOAST.WARNING);
   }
 };
@@ -299,8 +301,6 @@ export const getUserAcceptedRequests = (token, Toast) => async (dispatch) => {
         payload: data.data,
       });
 
-      Toast(data.msg, TOAST.SUCCESS);
-
       // !ERROR
     } else {
       warningHandle(response, data, Toast, dispatch);
@@ -347,8 +347,6 @@ export const getUserRequestedRequests =
           type: types.GET_USER_REQUESTED_EVENT_REQUEST,
           payload: data.data,
         });
-
-        Toast(data.msg, TOAST.SUCCESS);
 
         // !ERROR
       } else {

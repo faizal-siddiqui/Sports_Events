@@ -65,7 +65,10 @@ export const eventReducer = (state = initialState, { type, payload }) => {
 
     // * To reset the redux state after logging out of user
     case types.EVENT_RESET: {
-      return initialState;
+      return {
+        ...initialState,
+        events: state.events,
+      };
     }
 
     default: {

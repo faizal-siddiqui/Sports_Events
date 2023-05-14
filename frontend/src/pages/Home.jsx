@@ -2,8 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  Grid,
-  GridItem,
   SimpleGrid,
   Skeleton,
   useDisclosure,
@@ -20,6 +18,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
 
 const Home = () => {
+  //* For Pagination
   const [page, setPage] = useState(1);
 
   // * Consuming Redux Event State and auth State
@@ -33,8 +32,13 @@ const Home = () => {
   // *  Toast from custom hook
   const Toast = useToastComponent();
 
+  // * function to getEvents based upon query
+  const getEvents = (filterQuery = "") => {
+    dispatch(getAllEvents(`page=${page}&limit=${6}${filterQuery}`, Toast));
+  };
+
   useEffect(() => {
-    dispatch(getAllEvents(`page=${page}&limit=${6}`, Toast));
+    getEvents();
   }, [page]);
 
   return (
@@ -43,13 +47,19 @@ const Home = () => {
         {/* Importing Drawer Component and Filter to show Filters in the small screen */}
 
         <Box display={{ base: "block", sm: "block", md: "none", lg: "none" }}>
-          <Button onClick={drawer.onOpen}>Filters</Button>
+          <Button
+            className={styles.filterBtn}
+            colorScheme="teal"
+            onClick={drawer.onOpen}
+          >
+            Filters
+          </Button>
           <DrawerComponent
             placement={"left"}
             isOpen={drawer.isOpen}
             onClose={drawer.onClose}
           >
-            <Filter />
+            <Filter getEvents={getEvents} />
           </DrawerComponent>
         </Box>
 
@@ -59,7 +69,7 @@ const Home = () => {
           className={styles.sidebar}
           display={{ base: "none", sm: "none", md: "block", lg: "block" }}
         >
-          <Filter />
+          <Filter getEvents={getEvents} />
         </Box>
 
         {/* * This block show all the events in the form of grid*/}

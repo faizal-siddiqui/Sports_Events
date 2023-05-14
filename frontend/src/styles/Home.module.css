@@ -1,14 +1,28 @@
+:root{
+    --borderColor: rgba(128, 128, 128, 0.221);
+}
 
 .sidebar{
-    border: 2px solid red;
+    border: 1px solid var(--borderColor);
     width: 20%;
     height: calc(100dvh - 65px);
 }
 
 
 .events{
-    border: 2px solid teal;
+    border: 1px solid var(--borderColor);
     width: 80%;
+}
+
+
+.filterBtn{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* * Medium Screen */

@@ -1,25 +1,40 @@
-import { Box, Flex, Heading, Input, VStack } from "@chakra-ui/react";
-import React from "react";
+import { Box, Button, Heading, VStack } from "@chakra-ui/react";
+import React, { useState } from "react";
+import FilterType from "./FilterType";
 
-const FilterType = ({ name }) => {
-  return (
-    <Box>
-      <Heading
-        as="h5"
-        size="sm"
-        pb="19px"
-      >
-        {name}
-      </Heading>
-      <Input
-        type="text"
-        placeholder={`Enter ${name} Name`}
-      />
-    </Box>
-  );
+// input initialState
+const initialState = {
+  city: "",
+  type_of_game: "",
 };
 
-const Filter = () => {
+const Filter = ({ getEvents }) => {
+  // For Filter
+  const [filter, setFilter] = useState(initialState);
+
+  // event handler of input change
+  const handleChange = (e) => {
+    setFilter({
+      ...filter,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  // * function to convert filter object in query and call getEvents
+  const applyFilter = () => {
+    // * validating
+
+    let filterQuery = "";
+
+    for (let key in filter) {
+      if (filter[key] !== "") {
+        filterQuery += `&${key}=${filter[key]}`;
+      }
+    }
+
+    getEvents(filterQuery);
+  };
+
   return (
     <Box p={5}>
       <Heading
@@ -32,8 +47,27 @@ const Filter = () => {
         spacing={10}
         mt={10}
       >
-        <FilterType name={"City"} />
-        <FilterType name={"Game"} />
+        <FilterType
+          handleChange={handleChange}
+          value={filter.city}
+          name={"City"}
+          id={"city"}
+        />
+
+        <FilterType
+          handleChange={handleChange}
+          value={filter.type_of_game}
+          name={"Game"}
+          id={"type_of_game"}
+        />
+
+        <Button
+          colorScheme="teal"
+          variant="outline"
+          onClick={applyFilter}
+        >
+          Filter
+        </Button>
       </VStack>
     </Box>
   );

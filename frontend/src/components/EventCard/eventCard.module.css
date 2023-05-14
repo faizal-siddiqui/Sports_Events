@@ -1,0 +1,4 @@
+.img {
+  height: 400px; /* Makes the image take up the full height of the container */
+  object-fit: cover; /* Resizes the image to cover the container while maintaining aspect ratio */
+}

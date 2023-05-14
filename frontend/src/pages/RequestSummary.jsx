@@ -1,5 +1,12 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import React from "react";
+import {
+  Skeleton,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as types from "../store/Request/request.action";
 import useToastComponent from "../custom-hook/useToast";
@@ -8,9 +15,8 @@ import TableComponent from "../components/TableComponent";
 const RequestSummary = () => {
   const { token } = useSelector((state) => state.authManager);
 
-  const { userAcceptedEventRequests, userRequestedEventRequests } = useSelector(
-    (state) => state.requestManager
-  );
+  const { userAcceptedEventRequests, userRequestedEventRequests, loading } =
+    useSelector((state) => state.requestManager);
 
   const dispatch = useDispatch();
 
@@ -28,6 +34,12 @@ const RequestSummary = () => {
     dispatch(types.getUserRequestedRequests(token, Toast, status));
   };
 
+  // * while mounting call accepted request
+
+  useEffect(() => {
+    acceptedRequest();
+  }, []);
+
   return (
     <div>
       <Tabs
@@ -41,10 +53,14 @@ const RequestSummary = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <TableComponent userEventRequests={userAcceptedEventRequests} />
+            <Skeleton isLoaded={!loading}>
+              <TableComponent userEventRequests={userAcceptedEventRequests} />
+            </Skeleton>
           </TabPanel>
           <TabPanel>
-            <TableComponent userEventRequests={userRequestedEventRequests} />
+            <Skeleton isLoaded={!loading}>
+              <TableComponent userEventRequests={userRequestedEventRequests} />
+            </Skeleton>
           </TabPanel>
         </TabPanels>
       </Tabs>

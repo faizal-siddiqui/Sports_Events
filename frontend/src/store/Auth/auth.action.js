@@ -1,12 +1,10 @@
 // * To store token in cookie
 
+import { Toast } from "@chakra-ui/react";
 import { TOAST } from "../../utils/toastType";
-import {
-  AUTH_ERROR,
-  AUTH_LOADING,
-  AUTH_LOGIN,
-  AUTH_SIGNUP,
-} from "./auth.types";
+import { EVENT_RESET } from "../Event/event.types";
+import { REQUEST_RESET } from "../Request/request.types";
+import * as types from "./auth.types";
 
 const saveToken = (token) => {
   // Get the current date and time
@@ -26,7 +24,7 @@ const API_URL = `${process.env.REACT_APP_API_URL}`;
 export const signUpUser =
   (userCreds, Toast, showLoginComponent) => async (dispatch) => {
     // * LOADING
-    dispatch({ type: AUTH_LOADING });
+    dispatch({ type: types.AUTH_LOADING });
 
     try {
       // *getting Response Object
@@ -55,21 +53,22 @@ export const signUpUser =
         showLoginComponent();
 
         // * SIGNUP SUCCESS
-        dispatch({ type: AUTH_SIGNUP });
+        dispatch({ type: types.AUTH_SIGNUP });
       } else if (response.status === 500) {
         console.log("error", data);
 
         Toast(data.err, TOAST.ERROR);
 
-        dispatch({ type: AUTH_ERROR });
+        dispatch({ type: types.AUTH_ERROR });
       } else {
         console.log("warning", data);
 
         Toast(data.msg, TOAST.WARNING);
+        dispatch({ type: types.AUTH_ERROR });
       }
     } catch (err) {
       // * ERROR
-      dispatch({ type: AUTH_ERROR });
+      dispatch({ type: types.AUTH_ERROR });
 
       console.log("err:", err);
 
@@ -82,7 +81,7 @@ export const signUpUser =
 
 export const loginUser = (userCreds, Toast, navigate) => async (dispatch) => {
   // * LOADING
-  dispatch({ type: AUTH_LOADING });
+  dispatch({ type: types.AUTH_LOADING });
 
   try {
     // *getting Response Object
@@ -106,7 +105,7 @@ export const loginUser = (userCreds, Toast, navigate) => async (dispatch) => {
 
     if (response.status === 200) {
       //   * Dispatching action and token as payload to store
-      dispatch({ type: AUTH_LOGIN, payload: data.token });
+      dispatch({ type: types.AUTH_LOGIN, payload: data.token });
 
       //   * Save Token on Cookies
       saveToken(data.token);
@@ -120,17 +119,32 @@ export const loginUser = (userCreds, Toast, navigate) => async (dispatch) => {
 
       Toast(data.err, TOAST.ERROR);
 
-      dispatch({ type: AUTH_ERROR });
+      dispatch({ type: types.AUTH_ERROR });
     } else {
       console.log("warning", data);
 
       Toast(data.msg, TOAST.WARNING);
+      dispatch({ type: types.AUTH_ERROR });
     }
   } catch (err) {
     // * ERROR
-    dispatch({ type: AUTH_ERROR });
+    dispatch({ type: types.AUTH_ERROR });
 
     console.log("err:", err);
     Toast(err.msg, TOAST.ERROR);
   }
+};
+
+// LOGOUT USER
+export const logoutUser = (Toast) => (dispatch) => {
+  // * delete token from cookies
+
+  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+  // * dispatch actions
+  dispatch({ type: types.AUTH_RESET });
+  dispatch({ type: REQUEST_RESET });
+  dispatch({ type: EVENT_RESET });
+
+  Toast("Logout Successful", TOAST.SUCCESS);
 };

@@ -8,6 +8,7 @@ import {
   useColorModeValue,
   Stack,
   Input,
+  Text,
 } from "@chakra-ui/react";
 
 import {
@@ -17,14 +18,16 @@ import {
   Search2Icon,
 } from "@chakra-ui/icons";
 
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 import DrawerComponent from "../Drawer";
 import ModalComponent from "../Modal";
 import Form from "../Form";
 import { useDispatch, useSelector } from "react-redux";
-import { createEvent } from "../../store/Event/event.action";
+import { createEvent, getAllEvents } from "../../store/Event/event.action";
 import useToastComponent from "../../custom-hook/useToast";
+import { useEffect, useRef, useState } from "react";
+import { logoutUser } from "../../store/Auth/auth.action";
 
 const Links = [
   {
@@ -53,12 +56,18 @@ const NavLink = ({ children, path }) => (
 );
 
 const Navbar = () => {
+  //* For Filter
+  const [search, setSearch] = useState("");
+
+  // * for storing timeoutId
+  const ref = useRef("");
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const drawer = useDisclosure();
   const modal = useDisclosure();
 
   //   * consuming redux state
-  const { token } = useSelector((state) => state.authManager);
+  const { token, auth } = useSelector((state) => state.authManager);
 
   const dispatch = useDispatch();
 
@@ -73,6 +82,35 @@ const Navbar = () => {
     //* for closing modal
     modal.onClose();
   };
+
+  // For opening Modal
+  const openModal = () => {
+    if (!auth) return <Navigate to="/auth" />;
+    modal.onOpen();
+  };
+
+  // Fpr Logging Out User
+  const logout = () => {
+    dispatch(logoutUser(Toast));
+  };
+
+  // *Handle change for serach
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  // *Debouncing in Search Filter
+
+  useEffect(() => {
+    ref.current = setTimeout(() => {
+      dispatch(getAllEvents(`q=${search}`, Toast));
+    }, 400);
+
+    //* cleanup function clears the timeout
+    return () => {
+      clearTimeout(ref.current);
+    };
+  }, [search]);
 
   return (
     <>
@@ -138,7 +176,8 @@ const Navbar = () => {
               <Input
                 mt={6}
                 type="text"
-                placeholder="Search Events here"
+                placeholder="Search Events by Events Name"
+                onChange={handleChange}
               />
             </DrawerComponent>
 
@@ -150,7 +189,7 @@ const Navbar = () => {
               size={"sm"}
               mx={2}
               leftIcon={<AddIcon />}
-              onClick={modal.onOpen}
+              onClick={openModal}
             >
               Events
             </Button>
@@ -165,9 +204,18 @@ const Navbar = () => {
               <Form addEventFunc={addEventFunc} />
             </ModalComponent>
 
-            {/* Login Link */}
+            {/* Login Link and Logout Button */}
 
-            <NavLink path={"/auth"}>Login</NavLink>
+            {auth ? (
+              <Text
+                cursor="pointer"
+                onClick={logout}
+              >
+                Logout
+              </Text>
+            ) : (
+              <NavLink path={"/auth"}>Login</NavLink>
+            )}
           </Flex>
         </Flex>
 

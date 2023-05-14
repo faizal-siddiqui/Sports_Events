@@ -1,20 +1,23 @@
 import { Card, CardBody, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import React from "react";
+import styles from "./eventCard.module.css";
 
 const EventCard = ({ event, buttons = null }) => {
   return (
     <Card maxW="sm">
       {/* Adding Event details in Cart Body  */}
 
-      <CardBody>
+      <CardBody className={styles.productCard}>
         <Image
+          className={styles.img}
           src={event.poster}
           alt={event.event_name}
           borderRadius="lg"
-          width={"100%"}
+          // width={"100%"}
         />
 
         <Stack
+          className={styles.productInfo}
           mt="6"
           spacing="3"
         >

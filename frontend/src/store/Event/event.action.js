@@ -31,6 +31,7 @@ const warningHandle = (response, data, Toast, dispatch) => {
     console.log("warning", data);
 
     Toast(data.msg, TOAST.WARNING);
+    dispatch({ type: types.EVENT_ERROR });
   }
 };
 
