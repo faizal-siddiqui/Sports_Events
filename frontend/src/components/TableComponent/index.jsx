@@ -8,7 +8,8 @@ const TableComponent = ({ userEventRequests }) => {
         <tr>
           <th>Event name </th>
           <th>City</th>
-          <th isNumeric>Game Type</th>
+          <th>Game Type</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -17,6 +18,7 @@ const TableComponent = ({ userEventRequests }) => {
             <td data-label={"Event name"}>{request.event_id.event_name}</td>
             <td data-label={"City"}>{request.event_id.city}</td>
             <td data-label={"Game Type"}>{request.event_id.type_of_game}</td>
+            <td data-label={"Status"}>{request.status}</td>
           </tr>
         ))}
       </tbody>

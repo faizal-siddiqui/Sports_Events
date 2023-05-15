@@ -56,23 +56,26 @@ const updateReqStatus = async (req, res) => {
     // * if we want status to be accepted
     // * so compare players_limit and accepted request
     // * if they equal then event filled
+    console.log("acceptedRequest:", acceptedRequest.length);
+    console.log("existingRequest:", existingRequest);
 
     if (
       status === "accepted" &&
-      existingRequest.event_id.players_limit === acceptedRequest.length
+      existingRequest.event_id.players_limit >= acceptedRequest.length
     ) {
-      res.status(401).json({ msg: "Event Already Filled" });
+      res.status(403).json({ msg: "Event Already Filled" });
+      return;
+    } else {
+      //* Update the status in the request document
+
+      await RequestModel.findByIdAndUpdate(requestId, {
+        status,
+      });
+
+      res.status(200).json({
+        msg: "Request Updated",
+      });
     }
-
-    //* Save the updated event to the database
-
-    await RequestModel.findByIdAndUpdate(requestId, {
-      status,
-    });
-
-    res.status(200).json({
-      msg: "Request Updated",
-    });
   } catch (err) {
     res.status(500).json({ err });
   }
@@ -134,7 +137,6 @@ const getUserEventRequestStatus = async (req, res) => {
       event_id: eventId,
     });
 
-    // * Passing user request status if found otherwise not_applied which means user has not applied ye
     res.status(200).json({
       status: request ? request.status : "not_applied",
     });
@@ -151,12 +153,13 @@ const getRequestedUserRequest = async (req, res) => {
 
   // * This query contains status of request that we want to filter
   let { status } = req.query;
+  console.log("status:", status);
 
   if (!status) {
     res.status(404).json({ msg: "Status Not found" });
   }
 
-  //* If status is not already an array, convert it to an array
+  // If status is not already an array, convert it to an array
   if (!Array.isArray(status)) {
     status = [status];
   }

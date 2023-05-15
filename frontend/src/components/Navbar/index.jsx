@@ -9,6 +9,7 @@ import {
   Stack,
   Input,
   Text,
+  Image,
 } from "@chakra-ui/react";
 
 import {
@@ -138,7 +139,13 @@ const Navbar = () => {
             alignItems={"center"}
           >
             <Link to="/">
-              <Box>Home</Box>
+              <Box>
+                <Image
+                  w="40px"
+                  src="/logo.png"
+                  alt="logo"
+                />
+              </Box>
             </Link>
             <HStack
               as={"nav"}

@@ -100,7 +100,11 @@ const EventDetails = () => {
     } else if (userEventStatus === "accepted") {
       // * allows user to see all the other users whose request got accepted for this event
 
+      Toast("Your request got Accepted", TOAST.SUCCESS);
+
       return;
+    } else if (userEventStatus === "expired") {
+      Toast("Your request got expired", TOAST.WARNING);
     } else {
       Toast("You have Already Requested", TOAST.WARNING);
       return;
@@ -181,7 +185,7 @@ const EventDetails = () => {
                 onClick={joinEventFunc}
               >
                 {/* * TODO: CHANGE THE DATA OF BUTTON DYNAMICALLY */}
-                JOIN
+                {userEventStatus === "not_applied" ? "JOIN" : userEventStatus}
               </Button>
 
               {/* Showing Other Participants of this event to Acccepted User*/}

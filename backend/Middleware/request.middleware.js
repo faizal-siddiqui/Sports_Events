@@ -1,23 +1,43 @@
+const { EventModel } = require("../Model/event.model");
 const { RequestModel } = require("../Model/request.model");
 
 const updateExpiredRequests = async (req, res, next) => {
   try {
     const currentTime = new Date(); // Get the current date and time
 
-    //* Construct the filter to match requests with date and time lesser than the current time
-    // * and status as pending
+    //* Update all the expired requests in database
+
     const filter = {
-      "event_id.date": { $lte: currentTime },
-      "event_id.timing": { $lte: currentTime },
+      "event_data.date": { $lte: currentTime.toJSON() },
+      "event_data.timing": {
+        $lte: currentTime.getHours() + ":" + currentTime.getMinutes(),
+      },
       status: "pending",
     };
 
-    //* Set the update object to change the status to "expired"
+    // * Get all the expired request
+    const expiredRequests = await RequestModel.aggregate([
+      {
+        $lookup: {
+          from: "events", // Replace "events" with the actual name of the event collection
+          localField: "event_id",
+          foreignField: "_id",
+          as: "event_data",
+        },
+      },
+      {
+        $match: filter,
+      },
+    ]);
 
-    const updates = { $set: { status: "expired" } };
-
-    //* Update all the expired requests in database
-    await RequestModel.updateMany(filter, updates);
+    // Update the fields in the documents returned by the aggregation query concurrently
+    await Promise.all(
+      expiredRequests.map((request) => {
+        return RequestModel.findByIdAndUpdate(request._id, {
+          status: "expired",
+        });
+      })
+    );
 
     next();
   } catch (error) {
