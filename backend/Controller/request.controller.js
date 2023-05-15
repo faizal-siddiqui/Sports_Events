@@ -56,12 +56,10 @@ const updateReqStatus = async (req, res) => {
     // * if we want status to be accepted
     // * so compare players_limit and accepted request
     // * if they equal then event filled
-    console.log("acceptedRequest:", acceptedRequest.length);
-    console.log("existingRequest:", existingRequest);
 
     if (
       status === "accepted" &&
-      existingRequest.event_id.players_limit >= acceptedRequest.length
+      existingRequest.event_id.players_limit <= acceptedRequest.length
     ) {
       res.status(403).json({ msg: "Event Already Filled" });
       return;
@@ -153,7 +151,6 @@ const getRequestedUserRequest = async (req, res) => {
 
   // * This query contains status of request that we want to filter
   let { status } = req.query;
-  console.log("status:", status);
 
   if (!status) {
     res.status(404).json({ msg: "Status Not found" });

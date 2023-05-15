@@ -8,9 +8,9 @@ const updateExpiredRequests = async (req, res, next) => {
     //* Update all the expired requests in database
 
     const filter = {
-      "event_data.date": { $lte: currentTime.toJSON() },
+      "event_data.date": { $lte: currentTime },
       "event_data.timing": {
-        $lte: currentTime.getHours() + ":" + currentTime.getMinutes(),
+        $lte: `${currentTime.getHours()}` + ":" + `${currentTime.getMinutes()}`,
       },
       status: "pending",
     };
